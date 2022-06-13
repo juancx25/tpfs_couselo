@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "inttypes.h": "c",
+        "list.h": "c",
+        "file_system.h": "c",
+        "datetime.h": "c",
+        "user.h": "c",
+        "group.h": "c",
+        "stdio.h": "c",
+        "user_group.h": "c"
+    }
+}
