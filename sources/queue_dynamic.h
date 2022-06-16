@@ -1,7 +1,7 @@
-#define t_elem int
+#define t_elem__queue void*
 
 typedef struct queue_node {
-  t_elem value;
+  t_elem__queue value;
   struct queue_node *next;
 } queue_node;
 
@@ -24,8 +24,8 @@ int queue_isfull (queue* q);
 
 int queue_isempty (queue* q);
 
-void enqueue (queue* q, t_elem elem);
+void enqueue (queue* q, t_elem__queue elem);
 
-t_elem dequeue (queue* q);
+t_elem__queue dequeue (queue* q);
 
-t_elem peek (queue* q);
+t_elem__queue peek (queue* q);

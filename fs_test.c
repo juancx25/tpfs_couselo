@@ -1,4 +1,23 @@
 #include "file_system.c"
+#include <string.h>
+void fs_bp(void* value,void* ctx){
+    ftn* aux = (ftn*)value;
+    file_printBasic(aux);
+}
+
+
+int cmp_id(void* a, void* b){
+    ftn* f1 = (ftn*)a;
+    ftn* f2 = (ftn*)b;
+    return (f1->id -f2->id);
+}
+
+int cmp_name(void* a, void* b){
+    ftn* f = (ftn*)a;
+    char* v = (char*)b;
+    if (strcmp(f->name,v) == 0) return 0;
+    else return 1;
+}
 
 void main(){
     // GROUP AND USER TESTING
@@ -38,10 +57,10 @@ void main(){
 
     // FILE TESTING
     ftn* root = file_new(fs,NULL,1,"raiz",file_readMetadata(fs));
-    /*  file_addChild(fs,root,1);
-        file_addChild(fs,root,0);
-        file_addChild(fs,root,1);
-        file_printContents(root);   */
+    file_addChild(fs,root,1);
+    file_addChild(fs,root,0);
+    file_addChild(fs,root,1);
+    file_addChild(fs,root->children->head->next->value,1);
 
 
     // METADATA TESTING
@@ -49,4 +68,13 @@ void main(){
 
     // PERMISSION TESTING
     int test = file_getAllPermissions(root);
+
+    // TRAVERSE TESTING
+    fs_scroll(fs,fs_bp,NULL);
+
+    // SEARCH TESTING
+    ftn* f = fs_search(fs,cmp_name,(void*)"b");
+    list* allas = fs_searchAll(fs,cmp_name,(void*)"pepe.exe");
+    printf("\n\n");
+    list_print(allas,(void*)file_printBasic);
 }

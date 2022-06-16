@@ -20,6 +20,14 @@ list* ent_getGroupList(entities_t* e){
     return e->groups;
 }
 
+uint32_t ent_getUserAI(entities_t* e){
+
+}
+
+uint32_t ent_getGroupAI(entities_t* e){
+
+}
+
 //--------------------------------------------------------------------------------------------
 /* Basic user functions: */
 
@@ -113,7 +121,6 @@ char* group_getName(group_t* g){
 list* group_getUserList(group_t* g){
     return g->users;
 }
-
 
 //--------------------------------------------------------------------------------------------
 /* Utilities: */

@@ -110,3 +110,12 @@ void list_print(list *L, void (*print)(void*)){
     }
 }
 
+void list_move(list* L, void todo(void* node,void* ctx),void* ctx){
+    list_node* aux = L->head;
+    while (aux){
+        void* node = aux->value;
+        todo(node,ctx);
+        aux = aux->next;
+    }
+}
+

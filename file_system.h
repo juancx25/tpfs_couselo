@@ -14,9 +14,9 @@
         fs_remove();
         file_remove();
         file_rename();
-        fs_fileSearch();                ----> Make it generic (could search from id, name, date...)
         various get functions (get)
-        file_isOwner(); | file_isOnGroup(); | file_canUserWrite(); ...
+        file_isOwner(); | file_isOnGroup();
+        file_canUserWrite(); ...
 
         ----- TAKING IDEAS HERE ------
 */
@@ -30,6 +30,7 @@
 #include "sources/list.h"
 #include "sources/datetime.h"
 #include "user_group.h"
+#include "sources/queue_dynamic.c"
 
 /*  Constants: */
 #define standard_permissions 0xEA8
@@ -96,6 +97,14 @@ int fs_userLogin(file_system* fs,user_t* u);
 /* Logs out an user */
 user_t* fs_userLogout(file_system* fs);
 
+ftn* fs_removeFile(file_system* fs,ftn** file);
+
+void fs_scroll(file_system* fs,void todo(void*,void*),void* ctx);
+
+ftn* fs_search(file_system* fs,int cmp(void*,void*),void* ctx);
+
+list* fs_searchAll(file_system* fs,int cmp(void*,void*),void* ctx);
+
 //----------------------------------------------------------------------------------------------
 
 /*  FILE FUNCTIONS: 
@@ -111,11 +120,15 @@ ftn* file_new(file_system* fs,ftn* directory,uint8_t is_dir,char* name,file_meta
 /* Same as file_new but reads data from keyboard directly */
 ftn* file_create(file_system* fs,ftn* directory,uint8_t is_dir);
 
+void file_delete(ftn* file);
+
 /* Creates a child to the sent file and connects it */
 int file_addChild(file_system* fs,ftn* file, uint8_t is_dir);
 
-/* Reads all metadata info from keyboard */
-file_metadata* file_readMetadata();
+void file_addGroup(ftn* file,uint32_t group_id);
+
+char* file_getName(ftn* file);
+
 
 
 /*  File permissions handling   */
@@ -127,6 +140,24 @@ uint8_t file_getGuestPermissions(ftn* file);
 /* Gets file permissions for owner, group and guest */
 uint16_t file_getAllPermissions(ftn* file);
 
+int file_canUserRead(ftn* file,user_t* user);
+int file_canUserWrite(ftn* file,user_t* user);
+int file_canUserOpen(ftn* file,user_t* user);
+
+
+// METADATA:
+
+/* Reads all metadata info from keyboard. */
+file_metadata* metadata_read(uint32_t active_userid);
+
+file_metadata* file_getMetadata(ftn* file);
+list* file_getChildren(ftn* file);
+uint32_t file_getGroupId(ftn* file);
+uint32_t file_getOwnerId(ftn* file);
+date* file_getCreationDate(ftn* file);
+date* file_getModifDate(ftn* file);
+uint64_t file_getSize(ftn* file);
+
 //----------------------------------------------------------------------------------------------
 
 
@@ -135,12 +166,14 @@ uint16_t file_getAllPermissions(ftn* file);
     Functions with utilitary use (prints, etc)
 */
 
+int cmp_int(int a, int b);
+
 /* Prints basic information about the sent file */
 void file_printBasic(ftn* file);
 
 /* Prints file permissions in an "RWX" fashion, i.e.:
     Owner:  Group:  Guest:
-    RWX     RW-     R--
+    RWX     R-X     R--
 */
 void file_printPermissions(ftn* file);
 

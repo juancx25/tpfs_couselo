@@ -39,7 +39,7 @@ int queue_isempty (queue* q) {
   else return 0;
 }
 
-void enqueue (queue* q, t_elem elem) {
+void enqueue (queue* q, t_elem__queue elem) {
   if (!queue_isfull(q)){
     queue_node *new = (queue_node*)malloc(sizeof(queue_node));
     if (new!=NULL){
@@ -52,8 +52,8 @@ void enqueue (queue* q, t_elem elem) {
   }
 }
 
-t_elem dequeue (queue* q) {
-  t_elem value;
+t_elem__queue dequeue (queue* q) {
+  t_elem__queue value;
   if (!queue_isempty(q)){
     queue_node *aux = q->head;
     while ((aux != NULL) && (aux->next != q->tail)){
@@ -74,6 +74,6 @@ t_elem dequeue (queue* q) {
   return value;
 }
 
-t_elem peek (queue* q) {
+t_elem__queue peek (queue* q) {
   /*COMPLETAR*/
 }

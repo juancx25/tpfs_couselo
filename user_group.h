@@ -38,6 +38,17 @@ typedef struct {                    //Groups
 } group_t;
 
 //--------------------------------------------------------------------------------------------
+/*  BASIC ENTITIES FUNCTIONS:
+
+*/
+
+entities_t* ent_new();
+list* ent_getUserList(entities_t* e);
+list* ent_getGroupList(entities_t* e);
+uint32_t ent_getUserAI(entities_t* e);
+uint32_t ent_getGroupAI(entities_t* e);
+//--------------------------------------------------------------------------------------------
+
 /*  BASIC USER FUNCTIONS:
 
     These functions allow to create, modify, read and delete an user and its data.
@@ -63,6 +74,8 @@ list* user_getGroupList(user_t* u);
 /* Removes an user and its reference from each group it´s in */
 void user_remove(user_t* u);
 
+user_t* user_get(uint32_t* user_id);
+
 //--------------------------------------------------------------------------------------------
 /*  LINKS BETWEEN USERS AND GROUPS:     
 
@@ -83,9 +96,20 @@ void user_group_unlink(user_t* u,group_t* g,int cmp(void*,void*));
     These functions allow to create, modify, read and delete a group and its data.
 */
 
-char* group_setName();
+
 group_t* group_new(entities_t* e,char* name);
 
+group_t* group_create(entities_t* e);
+
+uint32_t group_getId(group_t* g);
+
+char* group_getName(group_t* g);
+
+list* group_getUserList(group_t* g);
+
+void group_remove(group_t* g);
+
+group_t* group_get(uint32_t group_id);
 //--------------------------------------------------------------------------------------------
 
 
